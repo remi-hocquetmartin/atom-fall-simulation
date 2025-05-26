@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Simulation de chute d'atome</title>
+  <style>
+    body {
+      background-color: #121212;
+      color: #e0e0e0;
+      font-family: Arial, sans-serif;
+      padding: 30px;
+      display: flex;
+      justify-content: space-between;
+    }
+    .left-column {
+      flex: 2;
+      text-align: center;
+    }
+    .right-column {
+      flex: 1;
+      padding-left: 30px;
+      border-left: 1px solid #444;
+    }
+    .container {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      height: 500px;
+      margin-top: 30px;
+    }
+    .tube {
+      position: relative;
+      width: 100px;
+      height: 480px;
+      background: linear-gradient(to bottom, #2e2e2e, #1b1b1b);
+      border: 2px solid #888;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: inset 0 0 10px #000;
+    }
+    .atom {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      width: 12px;
+      height: 12px;
+      margin-left: -6px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #00f2ff, #00788c);
+      animation: fall 0.156s linear forwards;
+    }
+    @keyframes fall {
+      0% { top: 0; }
+      100% { top: 468px; }
+    }
+    .info {
+      margin-top: 20px;
+    }
+    button {
+      padding: 10px 20px;
+      background: #00bcd4;
+      border: none;
+      color: white;
+      font-size: 16px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #0097a7;
+    }
+    .chrono {
+      font-size: 24px;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="left-column">
+    <h1>Simulation de chute d'atome froid</h1>
+    <div class="info">
+      Longueur du tube : 0,120000 m ± 1 µm<br>
+      Temps de chute mesuré ± 10⁻⁹ s
+    </div>
+    <div class="chrono" id="chrono">Temps de chute : -</div>
+    <button onclick="lancerAtome()">Lancer un atome</button>
+    <div class="container">
+      <div class="tube" id="tube"></div>
+    </div>
+  </div>
+  <div class="right-column">
+    <h2>Mesure de g</h2>
+    <p>Cette expérience simule la chute libre d'un atome froid dans un tube à vide. La mesure du temps de chute, extrêmement courte (de l'ordre de 0,156 s), permet de calculer l'accélération gravitationnelle g avec une précision de l'ordre du nanoseconde.</p>
+    <p>La longueur du tube est fixée à 0,120000 m ± 1 µm. En répétant plusieurs fois la mesure, on peut établir une moyenne et déterminer g avec une incertitude extrêmement faible, ce qui reflète les méthodes modernes utilisées en métrologie atomique.</p>
+    <p>© Rémi HOCQUET MARTIN</p>
+  </div>
+
+  <script>
+    function lancerAtome() {
+      const tube = document.getElementById('tube');
+      const chrono = document.getElementById('chrono');
+
+      // Générer un temps entre 0,156003182 et 0,156003191 (secondes)
+      const tempsChute = 0.156003182 + Math.random() * (0.000000009);
+
+      // Créer un atome
+      const atome = document.createElement('div');
+      atome.className = 'atom';
+      tube.appendChild(atome);
+
+      // Mettre à jour le chronomètre
+      chrono.textContent = 'Temps de chute : ' + tempsChute.toFixed(9) + ' s';
+
+      // Supprimer l'atome après sa chute (0.2s max pour être sûr)
+      setTimeout(() => {
+        tube.removeChild(atome);
+      }, 200);
+    }
+  </script>
+</body>
+</html>
